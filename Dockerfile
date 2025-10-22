@@ -36,6 +36,7 @@ ENV FLASK_APP=app.py
 ENV PYTHONUNBUFFERED=1
 ENV PORT=5000
 
-# Run the application with shell to properly expand $PORT
-CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT} --workers 2 --timeout 120 --log-level info"]
+# Run the application via start.sh so PORT is resolved in script
+RUN chmod +x start.sh
+CMD ["./start.sh"]
 
