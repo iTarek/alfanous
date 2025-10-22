@@ -2,6 +2,11 @@ FROM python:2.7-slim
 
 WORKDIR /app
 
+# Fix Debian Buster repositories (now archived)
+RUN sed -i 's|http://deb.debian.org|http://archive.debian.org|g' /etc/apt/sources.list && \
+    sed -i 's|http://security.debian.org|http://archive.debian.org|g' /etc/apt/sources.list && \
+    sed -i '/buster-updates/d' /etc/apt/sources.list
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
