@@ -94,10 +94,27 @@ def search():
             params['romanization'] = None
         
         print("Search params:", params)
-        result = output.do(params)
+        
+        # Try calling the internal _search method to get actual exceptions
+        try:
+            result = output.do(params)
+        except Exception as inner_e:
+            import traceback
+            print("INNER EXCEPTION caught:")
+            print(traceback.format_exc())
+            raise
+        
         print("Search result error code:", result.get("error", {}).get("code"))
         if result.get("error", {}).get("code") != 0:
             print("Search failed with:", result.get("error"))
+            # Try to get more details from the search engine directly
+            try:
+                test_search = output._search_aya(params)
+                print("Direct search result:", test_search)
+            except Exception as test_e:
+                import traceback
+                print("Direct search exception:")
+                print(traceback.format_exc())
         return jsonify(result)
     except Exception as e:
         import traceback
