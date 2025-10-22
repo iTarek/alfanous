@@ -34,7 +34,8 @@ EXPOSE 5000
 # Set environment variable for Flask
 ENV FLASK_APP=app.py
 ENV PYTHONUNBUFFERED=1
+ENV PORT=5000
 
-# Run the application
-CMD gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120 --log-level info
+# Run the application with shell to properly expand $PORT
+CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT} --workers 2 --timeout 120 --log-level info"]
 
