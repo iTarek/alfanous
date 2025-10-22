@@ -93,10 +93,17 @@ def search():
         if params['romanization'] == 'none':
             params['romanization'] = None
         
+        print("Search params:", params)
         result = output.do(params)
+        print("Search result error code:", result.get("error", {}).get("code"))
+        if result.get("error", {}).get("code") != 0:
+            print("Search failed with:", result.get("error"))
         return jsonify(result)
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        import traceback
+        print("EXCEPTION in search:")
+        print(traceback.format_exc())
+        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
 
 
 @app.route('/api/suggest')
